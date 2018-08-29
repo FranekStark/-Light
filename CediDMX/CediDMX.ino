@@ -8,7 +8,8 @@
 #include <ESP8266WebServer.h>
 #include <espDMX.h>
 #include "chases.h"
-#include "Site.h"
+#include "main.h"
+#include "style.h"
 
 /*Wifi-Settings*/
 const char *wifiSsid = "#Light";
@@ -41,6 +42,7 @@ void setup() {
 
 	/*Setup Web-Server*/
 	webServer.on("/", handleWebClient);
+	webServer.on("/theme", handleStyle);
 	webServer.begin();
 
 	/*Setup DMX*/
@@ -77,7 +79,7 @@ void setup() {
 }
 
 void loop() {
-	delay(500);
+	delay(1);
 	/*Tasks*/
 	webServer.handleClient();
 	handleDMX();
@@ -89,7 +91,30 @@ void loop() {
 /*Called, when a Client sends a request to Webserver on Root-Level*/
 void handleWebClient() {
 	String arg = webServer.arg(0);
-	if (arg == "C0")
+
+	//LAMP
+	if (arg == "L0")
+	{
+
+	}
+	else if (arg == "LSS")
+	{
+
+	}
+	else if (arg == "LSM")
+	{
+
+	}
+	else if (arg == "LSF")
+	{
+
+	}
+	else if (arg == "L1")
+	{
+
+	}
+	//COLOR
+	else if (arg == "C0")
 	{
 		chases[1] = &color0;
 	}
@@ -101,9 +126,60 @@ void handleWebClient() {
 	{
 
 	}
+	else if (arg == "R")
+	{
+	
+	}
+	else if (arg == "G")
+	{
 
-	String s = MAIN_page;
-	webServer.send(200, "text/html", s);
+	}
+	else if (arg == "B")
+	{
+
+	}
+	else if (arg == "Cslow")
+	{
+	
+	}
+	else if (arg == "CMid")
+	{
+
+	}
+	else if (arg == "CFast")
+	{
+
+	}
+	//Move
+	else if (arg == "M0")
+	{
+
+	}
+	else if (arg == "M1")
+	{
+
+	}
+	else if (arg == "M2")
+	{
+
+	}
+	else if (arg == "M3")
+	{
+
+	}
+	//Immer:
+	//TODO: viel zu viele Daten!
+		String page = MAIN_page;
+		webServer.send(200, "text/html", page);
+	
+
+
+}
+
+void handleStyle()
+{
+	const char * style = STYLE_page;
+	webServer.send_P(200, "text/css", style);
 }
 
 void handleDMX() {
